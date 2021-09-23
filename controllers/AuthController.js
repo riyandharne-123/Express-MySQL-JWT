@@ -73,7 +73,7 @@ let user = async (req, resp) => {
 
     const authUser = jwt.verify(token, process.env.TOKEN_SECRET);
 
-    console.log(authUser)
+    //console.log(authUser)
 
     const user = await Users.findAll({
         where: {
