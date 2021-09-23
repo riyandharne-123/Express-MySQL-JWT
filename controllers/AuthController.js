@@ -27,7 +27,13 @@ let register = async (req, resp) => {
             password: password
         })
 
-        const token = jwt.sign({ user: user[0] }, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
+        const newUser = await Users.findAll({
+            where: {
+              email: data.email
+            }
+          });
+
+        const token = jwt.sign({ user: newUser[0] }, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
         resp.status(200).json({
             user: user,
             token: token
@@ -56,7 +62,7 @@ let login = async (req, resp) => {
                 token: token
             })
         } else {
-            resp.status(401).json('Wrong Credentials!')
+            resp.status(403).json('Wrong Credentials!')
         }
     }
 }
@@ -66,6 +72,8 @@ let user = async (req, resp) => {
     const token = authHeader && authHeader.split(' ')[1]
 
     const authUser = jwt.verify(token, process.env.TOKEN_SECRET);
+
+    console.log(authUser)
 
     const user = await Users.findAll({
         where: {
