@@ -1,10 +1,11 @@
 let db = require('../models');
 const bcrypt = require('bcrypt');
+const { Op }  = require("sequelize");
 
 const Users = db.users;
 
 let show = async (req, resp) => {
-    const user = await Users.findAll({
+    const user = await Users.findOne({
         where: {
           id: req.params.id
         }
@@ -15,6 +16,17 @@ let show = async (req, resp) => {
 let get = async (req, resp) => {
     const users = await Users.findAll();
     resp.status(200).json(users)
+}
+
+let filter = async (req, resp) => {
+  const users = await Users.findAndCountAll({ 
+    where: {
+      email: {
+        [Op.like]: '%' + req.query.email + '%'
+      }
+    }  
+  });
+  resp.status(200).json(users)
 }
 
 let create = async (req, resp) => {
@@ -76,5 +88,6 @@ module.exports = {
     get,
     show,
     update,
-    destroy
+    destroy,
+    filter
 }

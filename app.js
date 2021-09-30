@@ -2,6 +2,7 @@ const express = require('express')
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
+const userRequest = require('./requests/userRequest')
 
 const app = express();
 
@@ -21,8 +22,8 @@ app.get("/", (res, resp) => {
 });
 
 //auth routes
-app.post('/register', authController.register);
-app.post('/login', authController.login);
+app.post('/register', userRequest.register, authController.register);
+app.post('/login', userRequest.login, authController.login);
 
 //middleware protection
 app.use(jwtMiddleware.authenticateToken);
@@ -30,6 +31,7 @@ app.use(jwtMiddleware.authenticateToken);
 //protected routes
 app.get('/user', authController.user);
 app.get('/get/users', userController.get);
+app.get('/filter/users', userController.filter);
 app.post('/create/users', userController.create);
 app.get('/get/users/:id', userController.show);
 app.put('/update/users/:id', userController.update);
