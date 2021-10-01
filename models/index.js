@@ -18,6 +18,10 @@ db.sequelize = Sequelize;
 db.sequelize = sequelize
 
 db.users = require('./users')(sequelize, DataTypes);
+db.roles = require('./roles')(sequelize, DataTypes);
+
+db.users.hasOne(db.roles)
+db.roles.belongsTo(db.users)
 
 db.sequelize.sync({ force: false }).then(() =>{
     console.log('migrated')

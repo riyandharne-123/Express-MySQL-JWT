@@ -15,34 +15,14 @@ const validate = (req, res, next, validationRule) => {
     });
 }
 
-const register = (req, res, next) => {
+const role = (req, res, next) => {
     const validationRule = {
-        "email": "required|email",
         "name": "required|string",
-        "password": "required|string|min:6",
-    }
-    validate(req, res, next, validationRule)
-}
-
-const login = (req, res, next) => {
-    const validationRule = {
-        "email": "required|email",
-        "password": "required|string",
-    }
-    validate(req, res, next, validationRule)
-}
-
-const user = (req, res, next) => {
-    const validationRule = {
-        "email": "required|email",
-        "name": "required|string",
-        "password": "required|string|min:6",
+        "user_id": "required|string"
     }
     validate(req, res, next, validationRule)
 }
 
 module.exports = { 
-  register,
-  login,
-  user
+    role
 }

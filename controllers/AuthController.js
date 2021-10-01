@@ -47,7 +47,11 @@ let login = async (req, resp) => {
     const user = await Users.findOne({
         where: {
           email: data.email
-        }
+        },
+        include: {
+            model: db.roles,
+            as: 'role'
+          }
       });
     if(!user) {
         resp.status(404).json({
@@ -78,6 +82,10 @@ let user = async (req, resp) => {
     const user = await Users.findOne({
         where: {
           id: authUser.user.id
+        },
+        include: {
+            model: db.roles,
+            as: 'role'
         }
       });
 

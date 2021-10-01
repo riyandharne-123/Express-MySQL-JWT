@@ -8,13 +8,22 @@ let show = async (req, resp) => {
     const user = await Users.findOne({
         where: {
           id: req.params.id
+        },
+        include: {
+          model: db.roles,
+          as: 'role'
         }
       });
     resp.status(200).json(user)
 }
 
 let get = async (req, resp) => {
-    const users = await Users.findAll();
+    const users = await Users.findAll({
+      include: {
+        model: db.roles,
+        as: 'role'
+      }
+    });
     resp.status(200).json(users)
 }
 
@@ -23,6 +32,10 @@ let filter = async (req, resp) => {
     where: {
       email: {
         [Op.like]: '%' + req.query.email + '%'
+      },
+      include: {
+        model: db.roles,
+        as: 'role'
       }
     }  
   });
@@ -62,9 +75,13 @@ let update = async (req, resp) => {
       }
     });
 
-    const updatedUser = await Users.findAll({
+    const updatedUser = await Users.findOne({
       where: {
         id: req.params.id
+      },
+      include: {
+        model: db.roles,
+        as: 'role'
       }
     });
 
@@ -79,7 +96,12 @@ let destroy = async (req, resp) => {
     }
   });
 
-  const users = await Users.findAll();
+  const users = await Users.findAll({
+    include: {
+      model: db.roles,
+      as: 'role'
+    }
+  });
   resp.status(200).json(users)
 }
 
