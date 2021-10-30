@@ -50,3 +50,5 @@ app.delete('/delete/roles/:id', roleController.destroy);
 app.listen(port, () => {
     console.log(`app started at http://localhost:${port}`)
 })
+
+module.exports = app

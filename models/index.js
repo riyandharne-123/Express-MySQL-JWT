@@ -7,11 +7,7 @@ const sequelize = new Sequelize('express-mysql', 'root', '', {
     pool: {max:5, min:0, idle:10000}
 })
 
-sequelize.authenticate().then(() => {
-    console.log('connected to mysql db')
-}).catch(err => {
-    console.warn(err)
-})
+sequelize.authenticate()
 
 const db = {};
 db.sequelize = Sequelize;
@@ -23,10 +19,6 @@ db.roles = require('./roles')(sequelize, DataTypes);
 db.users.hasOne(db.roles)
 db.roles.belongsTo(db.users)
 
-db.sequelize.sync({ force: false }).then(() =>{
-    console.log('migrated')
-}).catch(err =>{
-    console.warn(err)
-})
+db.sequelize.sync({ force: false })
 
 module.exports = db;
